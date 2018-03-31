@@ -8,7 +8,7 @@ from PyQt4.QtCore import *
 import cv2
 
 class Constrained_OPT(QThread):
-    def __init__(self, opt_solver, batch_size=32, n_iters=25, topK=16, morph_steps=16, interp='linear'):
+    def __init__(self, opt_solver, img_path, batch_size=32, n_iters=25, topK=16, morph_steps=16, interp='linear'):
         QThread.__init__(self)
         self.nz = 100
         self.opt_solver = opt_solver
@@ -27,7 +27,7 @@ class Constrained_OPT(QThread):
         # constraints
         self.constraints = None
         # current frames
-        self.current_ims = None   # the images being displayed now
+        self.current_ims = cv2.imread(img_path)
         self.iter_count = 0
         self.iter_total = 0
         self.to_update = False

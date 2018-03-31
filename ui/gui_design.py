@@ -5,13 +5,14 @@ from . import gui_vis
 import time
 
 class GUIDesign(QWidget):
-    def __init__(self, opt_engine, win_size=320,
+    def __init__(self, opt_engine, img_path, win_size=320,
                  img_size=64, topK=16, model_name='tmp', useAverage=False, shadow=False):
+
         # draw the layout
         QWidget.__init__(self)
         morph_steps = 16
         self.opt_engine = opt_engine
-        self.drawWidget = gui_draw.GUIDraw(opt_engine, win_size=win_size,
+        self.drawWidget = gui_draw.GUIDraw(opt_engine, img_path, win_size=win_size,
                                            img_size=img_size, topK=topK, useAverage=useAverage, shadow=shadow)
         self.drawWidget.setFixedSize(win_size, win_size)
         vbox = QVBoxLayout()

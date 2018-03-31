@@ -11,8 +11,9 @@ from .ui_sketch import UISketch
 from .ui_warp import UIWarp
 
 class GUIDraw(QWidget):
-    def __init__(self, opt_engine, win_size=320, img_size=64, topK=16, useAverage=False, shadow=False):
+    def __init__(self, opt_engine, img_path, win_size=320, img_size=64, topK=16, useAverage=False, shadow=False):
         QWidget.__init__(self)
+        self.img_path = img_path
         self.isPressed = False
         self.points = []
         self.topK = topK
@@ -31,8 +32,8 @@ class GUIDraw(QWidget):
         self.show_ui = True
         self.uir = UIRecorder(shadow=shadow)
         nc = 1 if shadow else 3
-        self.uiColor = UIColor(img_size=img_size, scale=self.scale, nc=nc)
-        self.uiSketch = UISketch(img_size=img_size, scale=self.scale, nc=nc)
+        self.uiColor = UIColor(img_size=img_size,img_path=img_path, scale=self.scale, nc=nc)
+        self.uiSketch = UISketch(img_size=img_size,img_path=img_path,scale=self.scale, nc=nc)
         self.uiWarp = UIWarp(img_size=img_size, scale=self.scale, nc=nc)
         self.img_size = img_size
         self.move(win_size, win_size)
@@ -42,6 +43,8 @@ class GUIDraw(QWidget):
         self.movie = True
         self.frame_id = -1
         self.image_id = 0
+        self.initImage()
+
 
     def change_average_mode(self):
         self.useAverage = not self.useAverage
@@ -55,6 +58,12 @@ class GUIDraw(QWidget):
             [im_c, mask_c] = self.uiWarp.get_constraints()
             [im_e, mask_e] = self.uiWarp.get_edge_constraints()
 
+        #im_c = cv2.imread("/users/PES0716/ucn2794/Desktop/images/row0010_image00000.png")
+
+        # mask_c = cv2.imread("/users/PES0716/ucn2794/Desktop/images/row0010_image00000.png", cv2.IMREAD_GRAYSCALE)
+        # mask_c = np.expand_dims(mask_c,axis=2)
+
+        #im_e = im_c
         self.opt_engine.set_constraints([im_c, mask_c, im_e, mask_e])
         self.opt_engine.update()
         self.frame_id = -1
@@ -155,12 +164,33 @@ class GUIDraw(QWidget):
         rst = rst_f.astype(np.uint8)
         return rst
 
+
+    def initImage(self):
+        painter = QPainter()
+        im = cv2.imread(self.img_path)
+
+        if im is not None:
+            bigim = cv2.resize(im, (self.nps, self.nps))
+            qImg = QImage(bigim.tostring(), self.nps, self.nps, QImage.Format_RGB888)
+            painter.drawImage(0, 0, qImg)
+        painter.end()
+
+
     def paintEvent(self, event):
         painter = QPainter()
         painter.begin(self)
         painter.fillRect(event.rect(), Qt.white)
+		
+	
+	#image = QImage()
+	#load_img = image.load("./shoes_2","jpg")
+	#q_rec = event.rect()
+	
+	#painter.drawImage(q_rec, image)
+	
         painter.setRenderHint(QPainter.Antialiasing)
         im = self.opt_engine.get_image(self.get_image_id(), self.get_frame_id(), self.useAverage)
+        #im = cv2.imread("/users/PES0716/ucn2794/Desktop/images/row0010_image00000.png")
         if self.shadow and self.useAverage:
             im = self.shadow_image(im, self.pos)
 
@@ -168,6 +198,7 @@ class GUIDraw(QWidget):
             bigim = cv2.resize(im, (self.nps, self.nps))
             qImg = QImage(bigim.tostring(), self.nps, self.nps, QImage.Format_RGB888)
             painter.drawImage(0, 0, qImg)
+	    #painter.drawImage(0,0, image)
 
         # draw path
         if self.isPressed and self.type in ['color', 'edge'] and self.show_ui:
@@ -187,7 +218,7 @@ class GUIDraw(QWidget):
         # draw cursor
         if self.pos is not None:
             w = self.brushWidth
-            c = self.color
+	    c = self.color
             ca = QColor(255, 255, 255, 127)
             pnt = QPointF(self.pos.x(), self.pos.y())
             if self.type is 'color':

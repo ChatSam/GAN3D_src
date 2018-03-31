@@ -2,11 +2,13 @@ from __future__ import print_function
 import sys
 import argparse
 import qdarkstyle
-from PyQt4.QtGui import QApplication, QIcon
+from PyQt4.QtGui import QApplication, QIcon, QPixmap, QLabel
 from PyQt4.QtCore import Qt
 from ui import gui_design
 from pydoc import locate
 import constrained_opt
+
+import pdb
 
 def parse_args():
     parser = argparse.ArgumentParser(description='iGAN: Interactive Visual Synthesis Powered by GAN')
@@ -27,6 +29,8 @@ def parse_args():
     return args
 
 if __name__ == '__main__':
+    img_path = "/users/PES0716/ucn2794/Desktop/images/row0010_image00000.png"
+
     args = parse_args()
     if not args.model_file:  #if the model_file is not specified
         args.model_file = './models/%s.%s' % (args.model_name, args.model_type)
@@ -42,15 +46,23 @@ if __name__ == '__main__':
     opt_class = locate('constrained_opt_%s' % args.framework)
     opt_solver = opt_class.OPT_Solver(model, batch_size=args.batch_size, d_weight=args.d_weight)
     img_size = opt_solver.get_image_size()
-    opt_engine = constrained_opt.Constrained_OPT(opt_solver, batch_size=args.batch_size, n_iters=args.n_iters, topK=args.top_k,
+
+    opt_engine = constrained_opt.Constrained_OPT(opt_solver,img_path, batch_size=args.batch_size, n_iters=args.n_iters, topK=args.top_k,
                                                  morph_steps=args.morph_steps, interp=args.interp)
 
+    #pdb.set_trace()
     # initialize application
     app = QApplication(sys.argv)
-    window = gui_design.GUIDesign(opt_engine, win_size=args.win_size, img_size=img_size, topK=args.top_k,
+    window = gui_design.GUIDesign(opt_engine,img_path, win_size=args.win_size, img_size=img_size, topK=args.top_k,
                                   model_name=args.model_name, useAverage=args.average, shadow=args.shadow)
     app.setStyleSheet(qdarkstyle.load_stylesheet(pyside=False))  # comment this if you do not like dark stylesheet
     app.setWindowIcon(QIcon('pics/logo.png'))  # load logo
+    
+    #pic = QLabel(window)
+    #pixmap = QPixmap ("./ui/shoes_test.png")
+    #pic.setPixmap(pixmap)
+
+
     window.setWindowTitle('Interactive GAN')
     window.setWindowFlags(window.windowFlags() & ~Qt.WindowMaximizeButtonHint)   # fix window siz
     window.show()

@@ -2,12 +2,19 @@ import numpy as np
 import cv2
 
 class UISketch:
-    def __init__(self, img_size, scale, accu=True, nc=3):
+    def __init__(self, img_size, img_path, scale, accu=True, nc=3):
         self.img_size = img_size
         self.scale = scale
         self.nc = nc
-        self.img = np.zeros((img_size, img_size, self.nc), np.uint8)
-        self.mask = np.zeros((img_size, img_size, 1), np.uint8)
+
+        if img_path is not "":
+            self.img = cv2.imread(img_path)
+            self.mask = cv2.imread(img_path,cv2.IMREAD_GRAYSCALE)
+            self.mask = np.expand_dims(self.mask,axis=2)
+        else:
+            self.img = np.zeros((img_size, img_size, self.nc), np.uint8)
+            self.mask = np.zeros((img_size, img_size, 1), np.uint8)
+
         if self.nc == 1:  # [hack]
             self.width = 2
         else:
