@@ -11,3 +11,9 @@ Run the imports
 To run the base demo- 
 
     THEANO_FLAGS='device=gpu0, floatX=float32, nvcc.fastmath=True' python iGAN_main.py --model_name shoes_64
+    
+    source envs/my_root/bin/activate my_root
+    module load cuda
+    THEANO_FLAGS='device=gpu0, floatX=float32, nvcc.fastmath=True' python iGAN_main.py --model_name shoes_64
+
+
