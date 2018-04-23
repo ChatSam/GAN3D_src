@@ -1,14 +1,6 @@
 ## iGAN: Interactive Image Generation via Generative Adversarial Networks
 [[Project]](http://www.eecs.berkeley.edu/~junyanz/projects/gvm/) [[Youtube]](https://youtu.be/9c4z6YsBGQ0)   [[Paper]](https://arxiv.org/pdf/1609.03552v2.pdf)  
-A research prototype developed by UC Berkeley and Adobe CTL.  
-
-Latest developement:  
-[[pix2pix]](https://github.com/phillipi/pix2pix): Torch implementation for learning a mapping from input images to output images.  
-[[CycleGAN]](https://github.com/junyanz/CycleGAN): Torch implementation for learning an image-to-image translation (i.e. pix2pix) without input-output pairs.  
-[[pytorch-CycleGAN-and-pix2pix]](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix): PyTorch implementation for both unpaired and paired image-to-image translation.
-
-
-<img src='pics/demo.gif' width=320>
+Forked project from a research prototype developed by UC Berkeley and Adobe CTL.  
 
 ## Overview
 iGAN (aka. interactive GAN) is the author's implementation of interactive image generation interface described in:  
@@ -19,29 +11,23 @@ In European Conference on Computer Vision (ECCV) 2016
 <img src='pics/demo_teaser.jpg' width=800>
 
 
-Given a few user strokes, our system could produce photo-realistic samples that best satisfy the user edits at real-time. Our system is based on deep generative models such as Generative Adversarial Networks ([GAN](https://arxiv.org/abs/1406.2661)) and [DCGAN](https://github.com/Newmu/dcgan_code). The system serves the following two purposes:
-* An intelligent drawing interface for automatically generating images inspired by the color and shape of the brush strokes.
-* An interactive visual debugging tool for understanding and visualizing deep generative models. By interacting with the  generative model, a developer can understand what visual content the model can produce, as well as the limitation of the model.
-
-We are working on supporting more generative models (e.g. variational autoencoder) and more deep learning frameworks (e.g. Tensorflow). You are welcome to propose new changes or contribute new features (e.g. Tensorflow branch) via pull requests. Please cite our paper if you find this code useful in your research.
-
-Contact: Jun-Yan Zhu (junyanz@berkeley.edu)
+Given a few user strokes, our system could produce photo-realistic samples that best satisfy the user edits at real-time. Our system is based on deep generative models such as Generative Adversarial Networks ([GAN](https://arxiv.org/abs/1406.2661)) and [DCGAN](https://github.com/Newmu/dcgan_code). The system serves the following two 
 
 ## Getting started
 * Install the python libraries. (See `Requirements`).
 * Download the code from GitHub:
 ```bash
-git clone https://github.com/junyanz/iGAN
-cd iGAN
+git clone https://github.com/ChatSam/GAN3D_src
+cd GAN3D_src
 ```
 * Download the model. (See `Model Zoo` for details):
 ``` bash
-bash ./models/scripts/download_dcgan_model.sh outdoor_64
+bash ./models/scripts/download_dcgan_model.sh shoes_64
 ```
 
 * Run the python script:
 ``` bash
-THEANO_FLAGS='device=gpu0, floatX=float32, nvcc.fastmath=True' python iGAN_main.py --model_name outdoor_64
+THEANO_FLAGS='device=gpu0, floatX=float32, nvcc.fastmath=True' python iGAN_main.py --model_name shoes_64
 ```
 
 ## Requirements
@@ -100,23 +86,6 @@ See [[Youtube]](https://youtu.be/9c4z6YsBGQ0?t=2m18s) at 2:18s for the interacti
 * Tooltips: when you move the cursor over a button , the system will display the tooltip of the button.
 
 
-## Model Zoo:
-Download the theano DCGAN model (e.g. outdoor_64). Before using our system, please check out the random real images vs. DCGAN generated samples to see which kind of images that a model can produce.
-
-``` bash
-bash ./models/scripts/download_dcgan_model.sh outdoor_64
-```
-* [ourdoor_64.dcgan_theano](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/models/theano_dcgan/outdoor_64.dcgan_theano) (64x64): trained on 150K landscape images from MIT [Places](http://places.csail.mit.edu/) dataset [[Real](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/samples/outdoor_64_real.png) vs. [DCGAN](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/samples/outdoor_64_dcgan.png)].
-* [church_64.dcgan_theano](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/models/theano_dcgan/church_64.dcgan_theano) (64x64): trained on 126k church images from the [LSUN](http://lsun.cs.princeton.edu/2016/) challenge [[Real](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/samples/church_64_real.png) vs. [DCGAN](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/samples/church_64_dcgan.png)].
-* [handbag_64.dcgan_theano](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/models/theano_dcgan/handbag_64.dcgan_theano) (64x64): trained on 137K handbag images downloaded from Amazon [[Real](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/samples/handbag_64_real.png) vs. [DCGAN](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/samples/handbag_64_dcgan.png)].
-* [shoes_64.dcgan_theano](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/models/theano_dcgan/shoes_64.dcgan_theano) (64x64): trained on 50K shoes images collected by [Yu and Grauman](http://vision.cs.utexas.edu/projects/finegrained/utzap50k/) [[Real](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/samples/shoes_64_real.png) vs. [DCGAN](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/samples/shoes_64_dcgan.png)].
-* [hed_shoes_64.dcgan_theano](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/models/theano_dcgan/hed_shoes_64.dcgan_theano) (64x64): trained on 50K shoes sketches (computed by [HED](https://github.com/s9xie/hed)) [[Real](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/samples/hed_shoes_64_real.png) vs. [DCGAN](https://people.eecs.berkeley.edu/~junyanz/projects/gvm/samples/hed_shoes_64_dcgan.png)]. (Use this model with `--shadow` flag)
-
-We provide a simple script to generate samples from a pre-trained DCGAN model. You can run this script to test if Theano, CUDA, cuDNN are configured properly before running our interface.
-```bash
-THEANO_FLAGS='device=gpu0, floatX=float32, nvcc.fastmath=True' python generate_samples.py --model_name outdoor_64 --output_image outdoor_64_dcgan.png
-```
-
 
 ## Command line arguments:
 Type `python iGAN_main.py --help` for a complete list of the arguments. Here we discuss some important arguments:
@@ -133,59 +102,3 @@ THEANO_FLAGS='device=gpu0, floatX=float32, nvcc.fastmath=True' python iGAN_main.
 
 ## Dataset and Training
 See more details [here](./train_dcgan/README.md)
-
-## Projecting an Image onto Latent Space
-<img src='pics/predict.jpg' width=800>
-
-We provide a script to project an image into latent space (i.e. `x->z`):
-* Download the pre-trained AlexNet model (`conv4`):
-```bash
-bash models/scripts/download_alexnet.sh conv4
-```
-* Run the following script with a model and an input image. (e.g. model: `shoes_64.dcgan_theano`, and input image `./pics/shoes_test.png`)
-```bash
-THEANO_FLAGS='device=gpu0, floatX=float32, nvcc.fastmath=True' python iGAN_predict.py --model_name shoes_64 --input_image ./pics/shoes_test.png --solver cnn_opt
-```
-* Check the result saved in `./pics/shoes_test_cnn_opt.png`
-* We provide three methods: `opt` for optimization method; `cnn` for feed-forward network method (fastest); `cnn_opt` hybrid of the previous methods (default and best). Type `python iGAN_predict.py --help` for a complete list of the arguments.
-
-## Script without UI
-<img src='pics/script_result.png' width=1000>
-
-We also provide a standalone script that should work without UI. Given user constraints (i.e. a color map, a color mask and an edge map), the script generates multiple images that mostly satisfy the user constraints. See `python iGAN_script.py --help` for more details.
-```bash
-THEANO_FLAGS='device=gpu0, floatX=float32, nvcc.fastmath=True' python iGAN_script.py --model_name outdoor_64
-```
-
-
-## TODO
-* ~~Support Python3.~~
-* ~~Add image datasets.~~
-* ~~Support average image mode.~~
-* ~~Add the DCGAN model training script.~~  
-* ~~Support sketch models for sketching guidance.~~
-* ~~Add the script for projecting an image to the latent vector `z`.~~
-* ~~Add a standalone script without UI.~~
-* Add 128x128 models.
-* Support other deep learning frameworks (e.g. Tensorflow).
-* Support other deep generative models (e.g. variational autoencoder).
-* Support image morphing mode.
-* Support image editing mode.
-
-## Citation
-```
-@inproceedings{zhu2016generative,
-  title={Generative Visual Manipulation on the Natural Image Manifold},
-  author={Zhu, Jun-Yan and Kr{\"a}henb{\"u}hl, Philipp and Shechtman, Eli and Efros, Alexei A.},
-  booktitle={Proceedings of European Conference on Computer Vision (ECCV)},
-  year={2016}
-}
-```
-
-## Cat Paper Collection
-If you love cats, and love reading cool graphics, vision, and learning papers, please check out our Cat Paper Collection:  
-[[Github]](https://github.com/junyanz/CatPapers) [[Webpage]](http://people.eecs.berkeley.edu/~junyanz/cat/cat_papers.html)
-
-## Acknowledgement
-* We modified the DCGAN [code](https://github.com/Newmu/dcgan_code) in our package. Thanks the authors for sharing the code. Please cite the original [DCGAN](https://arxiv.org/abs/1511.06434) paper if you use their models.
-* This work was supported, in part, by funding from Adobe, eBay and Intel, as well as a hardware grant from NVIDIA. J.-Y. Zhu is supported by Facebook Graduate Fellowship.
