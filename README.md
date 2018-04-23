@@ -2,15 +2,6 @@
 [[Project]](http://www.eecs.berkeley.edu/~junyanz/projects/gvm/) [[Youtube]](https://youtu.be/9c4z6YsBGQ0)   [[Paper]](https://arxiv.org/pdf/1609.03552v2.pdf)  
 Forked project from a research prototype developed by UC Berkeley and Adobe CTL.  
 
-## Overview
-iGAN (aka. interactive GAN) is the author's implementation of interactive image generation interface described in:  
-"Generative Visual Manipulation on the Natural Image Manifold"   
-[Jun-Yan Zhu](https://people.eecs.berkeley.edu/~junyanz/), [Philipp Krähenbühl](http://www.philkr.net/), [Eli Shechtman](https://research.adobe.com/person/eli-shechtman/), [Alexei A. Efros](https://people.eecs.berkeley.edu/~efros/)    
-In European Conference on Computer Vision (ECCV) 2016
-
-
-Given a few user strokes, our system could produce photo-realistic samples that best satisfy the user edits at real-time. Our system is based on deep generative models such as Generative Adversarial Networks ([GAN](https://arxiv.org/abs/1406.2661)) and [DCGAN](https://github.com/Newmu/dcgan_code). The system serves the following two 
-
 ## Getting started
 * Install the python libraries. (See `Requirements`).
 * Download the code from GitHub:
